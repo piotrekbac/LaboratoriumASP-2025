@@ -1,0 +1,26 @@
+@model Contact
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Dodaj kontakt</h2>
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name">Nazwa kontaktu</label>
+        <input class="form-control" asp-for="Name"/>
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label" asp-for="Email">Email kontaktu</label>
+        <input class="form-control" asp-for="Email"/>
+        <span class="text-danger" asp-validation-for="Email"></span>
+    </div>
+    
+    <div class="mb-3">
+        <button class="btn btn-primary" type="submit">Zapisz</button>
+    </div>
+
+</form>
