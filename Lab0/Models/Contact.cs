@@ -10,9 +10,11 @@ public class Contact
 
     [Required]
     [StringLength(maximumLength: 100, MinimumLength = 2)]
+    [Display(Name = "Imię i nazwisko")]
     public string? Name { get; set; }
     
     [EmailAddress]
+    [Display(Name = "Adres email")]
     public string? Email { get; set; }
     
     // [Phone]
