@@ -1,7 +1,11 @@
+using Lab0.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AddDbContext>();      // tworzymy tę linijkę po stworzeniu ContactDbService
+builder.Services.AddTransient<IContactService, ContactDbService>();     // Controller zamiast korzystać z AddMemorySerbice będzie korzystał z AddDbContext
 
 var app = builder.Build();
 
