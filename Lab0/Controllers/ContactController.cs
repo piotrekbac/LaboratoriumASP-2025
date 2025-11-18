@@ -3,18 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lab0.Controllers;
 
-public class ContactController : Controller
+public class ContactController(IContactService service) : Controller
 {
-    private static Dictionary<int, Contact> _contacts = new(){
-        { 1, new Contact() {Id = 1, Email = "ewa@wsei.edu.pl", Name = "ewa"} },
-        { 2, new Contact() {Id = 2, Email = "adam@wsei.edu.pl", Name = "adaś"} }
-    };
-
-    private static int i = 2;
     // GET
     public IActionResult Index()
     {
-        return View(_contacts.Values.ToList());
+        return View(service.GetContacts());
     }
 
     [HttpGet]   // wyświetlenie formularza dodania obiektu
@@ -30,17 +24,16 @@ public class ContactController : Controller
         {
             return View(model);
         }
-        // zapisanie obiektu
-        model.Id = ++i;
-        _contacts.Add(model.Id, model);
+        service.AddContact(model);
         return RedirectToAction("Index");   // przejdź do listy obiektów
     }
 
     public IActionResult Details(int id)
     {
-        if (_contacts.ContainsKey(id))
+        var contact = service.GetContactById(id);
+        if (contact is not null)
         {
-            return View(_contacts[id]);
+            return View(contact);
         }
         else
         {
@@ -50,9 +43,10 @@ public class ContactController : Controller
     [HttpGet]
     public IActionResult Edit(int id)
     {
-        if (_contacts.ContainsKey(id))
+        var contact = service.GetContactById(id);
+        if (contact is not null)
         {
-            return View(_contacts[id]);
+            return View(contact);
         }
         else
         {
@@ -68,16 +62,17 @@ public class ContactController : Controller
             return View(model);
         }
         // aktualizacja obiektu
-        _contacts[model.Id] = model;
+        service.UpdateContact(model);
         return RedirectToAction("Index"); 
     }
     
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        if (_contacts.ContainsKey(id))
+        var contact = service.GetContactById(id);
+        if (contact is not null)
         {
-            return View(_contacts[id]);
+            return View(contact);
         }
         else
         {
@@ -88,7 +83,7 @@ public class ContactController : Controller
     [HttpPost]
     public IActionResult DeleteConfirm(int id)
     {
-        _contacts.Remove(id);
+        service.DeleteContactById(id);
         return RedirectToAction("Index");
     }
     

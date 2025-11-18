@@ -16,7 +16,8 @@ public class ContactMemoryService: IContactService
 
     public void AddContact(Contact contact)
     {
-        _contacts.Add(++i, contact);
+        contact.Id = i++;
+        _contacts.Add(contact.Id, contact);
     }
 
     public bool UpdateContact(Contact contact)
